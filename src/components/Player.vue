@@ -2,18 +2,17 @@
   <div>
     <p>プレイヤーのカード2枚表示</p>
     <div class="flex-container">
-      <Card v-for="(item, index) in items"
-        :key="index"/>
-    </div>
-    <div class="flex-container">
-      <button @click="hit">1枚引く</button>
-      <button @click="stand">終わり</button>
+      <Card v-for="(hand, index) in hands"
+          :suit="hand.suit"
+          :rank="hand.rank"
+          :key="index"/>
     </div>
   </div>
 </template>
 
 <script>
 import Card from './Card'
+import deck from '../utils/deck'
 
 export default {
   name: 'Player',
@@ -25,16 +24,13 @@ export default {
       items: [
         {id: 1},
         {id: 2}
-      ]
+      ],
+      hand: []
     }
   },
-  methods: {
-    hit () {
-      console.log('hit')
-    },
-    stand () {
-      console.log('stand')
-    }
+  created: function () {
+    this.hand.push(deck())
+    this.hand.push(deck())
   }
 }
 </script>

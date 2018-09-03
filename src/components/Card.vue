@@ -1,12 +1,17 @@
 <template>
   <div>
-    <img src="../assets/card_club_01.png">
+    <img :src="image">
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Card'
+  name: 'Card',
+  computed: {
+    image: function () {
+      return require('../assets/card_club_01.png')
+    }
+  }
 }
 </script>
 

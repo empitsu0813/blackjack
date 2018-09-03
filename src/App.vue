@@ -3,6 +3,10 @@
     <h2>{{ message }}</h2>
     <Dealer/>
     <Player/>
+    <div class="flex-container">
+      <button @click="hit">1枚引く</button>
+      <button @click="stand">終わり</button>
+    </div>
   </div>
 </template>
 
@@ -18,7 +22,15 @@ export default {
   },
   data () {
     return {
-      message: 'Welcome to blackjack'
+      message: 'blackjack'
+    }
+  },
+  methods: {
+    hit () {
+      console.log('hit')
+    },
+    stand () {
+      console.log('stand')
     }
   }
 }
@@ -32,5 +44,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
 }
 </style>
