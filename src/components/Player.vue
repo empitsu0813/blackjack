@@ -1,17 +1,23 @@
 <template>
   <div>
-    <p>プレイヤーのカード2枚表示</p>
     <div class="flex-container">
       <Card v-for="(hand, index) in hands"
+          :key="index"
           :suit="hand.suit"
-          :rank="hand.rank"
-          :key="index"/>
+          :number="hand.number"
+          :hide="hand.hide">
+       </Card>
+    </div>
+    <div class="flex-container" v-show="showButtons">
+      <button @click="hit">Hit</button>
+      <button @click="stand">Stand</button>
     </div>
   </div>
 </template>
 
 <script>
 import Card from './Card'
+import calc from '../utils/calc'
 import deck from '../utils/deck'
 
 export default {
@@ -19,18 +25,26 @@ export default {
   components: {
     Card
   },
+  props: ['showButtons'],
   data () {
     return {
-      items: [
-        {id: 1},
-        {id: 2}
-      ],
-      hand: []
+      hands: [],
+      result: 0
     }
   },
   created: function () {
-    this.hand.push(deck())
-    this.hand.push(deck())
+    this.hands.push(deck())
+    this.hands.push(deck())
+    this.result = calc(this.hands)
+  },
+  methods: {
+    hit () {
+      this.hands.push(deck())
+      this.result = calc(this.hands)
+    },
+    stand () {
+      this.$emit('stand', this.result)
+    }
   }
 }
 </script>

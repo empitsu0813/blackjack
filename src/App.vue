@@ -1,36 +1,54 @@
 <template>
-  <div id="app">
-    <h2>{{ message }}</h2>
-    <Dealer/>
-    <Player/>
-    <div class="flex-container">
-      <button @click="hit">1枚引く</button>
-      <button @click="stand">終わり</button>
+  <div class="app">
+    <dealer ref="dealer" @result="postexec" />
+    <div class="message flex-container">
+      {{ mainMessage }}
+    </div>
+    <player @stand="stand" :showButtons="showButtons" />
+    <div class="message result flex-container">
+      {{ resultMessage }}
     </div>
   </div>
 </template>
 
 <script>
-import Player from './components/Player'
 import Dealer from './components/Dealer'
+import Player from './components/Player'
 
 export default {
   name: 'App',
-  components: {
-    Player,
-    Dealer
-  },
+  components: { Dealer, Player },
   data () {
     return {
-      message: 'blackjack'
+      mainMessage: 'Welcome to Black Jack',
+      playersResult: 0,
+      dealersResult: 0,
+      showButtons: true
     }
   },
   methods: {
-    hit () {
-      console.log('hit')
+    stand: function (playersResult) {
+      this.playersResult = playersResult
+      this.$refs.dealer.$emit('postexec', playersResult === 'Bust')
     },
-    stand () {
-      console.log('stand')
+    postexec: function (dealersResult) {
+      this.dealersResult = dealersResult
+      this.showButtons = false
+      this.mainMessage = `Dealer : ${dealersResult} / Player : ${this.playersResult}`
+    }
+  },
+  computed: {
+    resultMessage: function () {
+      if (this.showButtons) {
+        return ''
+      }
+      if (this.playersResult > this.dealersResult || this.dealersResult === 'Bust') {
+        return 'You Win'
+      }
+      if (this.playersResult < this.dealersResult || this.playersResult === 'Bust') {
+        return 'You Lose'
+      }
+      return 'Draw'
     }
   }
 }
